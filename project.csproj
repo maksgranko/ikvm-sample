@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework> <!-- there change target version, if need-->
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>MyCustomProject</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>YourName</Authors>
+    <Description>My custom .NET Framework 4.7.2 project with custom MSBuild targets.</Description>
+    <AssemblyVersion>1.0.238.4</AssemblyVersion>
+    <FileVersion>1.0.238.4</FileVersion>
+  </PropertyGroup>
+
+  <ItemGroup Label="dotnet pack instructions">
+    <Content Include="build\*.targets">
+      <Pack>true</Pack>
+      <PackagePath>build\</PackagePath>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="IKVM" Version="8.10.1" />
+    <PackageReference Include="IKVM.Image.JDK" Version="8.10.1" /> <!-- Remove packages via Visual Studio and add another, if you need update to your version -->
+    <PackageReference Include="IKVM.Maven.Sdk" Version="1.8.0" />
+  </ItemGroup>
+  <ItemGroup>
+    <IkvmReference Include="filename.jar"> <!-- change this on yours -->
+      <AssemblyName>PACKAGENAME</AssemblyName>
+      <AssemblyVersion>1.0.0.0</AssemblyVersion>
+      <AssemblyFileVersion>1.0.0.0</AssemblyFileVersion>
+      <DisableAutoAssemblyName>true</DisableAutoAssemblyName>
+      <DisableAutoAssemblyVersion>true</DisableAutoAssemblyVersion>
+      <FallbackAssemblyName>PACKAGENAME</FallbackAssemblyName>
+      <FallbackAssemblyVersion>1.0.0.0</FallbackAssemblyVersion>
+    </IkvmReference>
+  </ItemGroup>
+
+  <Target Name="MyCustomTarget">
+    <Message Text="Executing MyCustomTarget..." Importance="high" />
+  </Target>
+
+  <Target Name="CollectRuntimeOutputs" BeforeTargets="_GetPackageFiles">
+    <ItemGroup>
+      <Content Include="$(OutputPath)\*.dll;$(OutputPath)\*.json">
+        <Pack>true</Pack>
+        <PackagePath>build\</PackagePath>
+      </Content>
+    </ItemGroup>
+  </Target>
+</Project>
